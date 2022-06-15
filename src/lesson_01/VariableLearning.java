@@ -2,6 +2,8 @@ package lesson_01;
 
 public class VariableLearning {
     public static void main(String[] args) {
+        // Naming Convention: snake_case, camelCase(variable name), PascalCase (Class Name)
+
         // Kieu so nguyen:
         byte myByteNumber = 127;
         short myShortNumber = 128;
@@ -28,6 +30,12 @@ public class VariableLearning {
         myFloatNumber = 1.23F;  //re-assign value
         double myDoubleNumber = 0.649761684133263434D;
 
-        // Naming Convention: snake_case, camelCase(variable name), PascalCase (Class Name)
+        // Kieu boolean
+        boolean myBVar = true;
+        myBVar = false;
+
+        // Kieu Char
+        char c = 'd';
+
     }
 }
