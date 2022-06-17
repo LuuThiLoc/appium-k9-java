@@ -14,7 +14,7 @@ public class OperatorsLearning {
         int x = ++myNum1 + myNum2++;
 
         /*
-        * prefix First > right operand > assign value to left operand > postfix
+        * prefix First > right operand > assign value to left operand (assignment) > postfix
         * myNum1: 2
         * myNum2: 3
         * x: 4

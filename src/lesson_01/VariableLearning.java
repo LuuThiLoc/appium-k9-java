@@ -25,7 +25,7 @@ public class VariableLearning {
         System.out.println(Long.MIN_VALUE); //-9223372036854775808
 
         // Kieu so thuc:
-        //float myFloatNumber = 0.99F; // declare + assign value
+        // float myFloatNumber = 0.99F; // declare + assign value
         float myFloatNumber; // declare
         myFloatNumber = 1.23F;  //re-assign value
         double myDoubleNumber = 0.649761684133263434D;
