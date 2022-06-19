@@ -1,5 +1,6 @@
 package lesson_04;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,8 +10,9 @@ public class ArrayListLearning {
 
     public static void main(String[] args) {
 
-        // Raw data
+        // Raw type: ko có kiểu dữ liệu là gì
         ArrayList myArrList = new ArrayList();
+
         myArrList.add(0);
         myArrList.add(1.8D);
         myArrList.add(5.6F);
@@ -34,31 +36,67 @@ public class ArrayListLearning {
         List<String> myStringArrList = Arrays.asList("Teo", "Ti", "Xiu");
         List<Boolean> myBlArrList = Arrays.asList(true, false);
 
-        // Summary:
-        List<Integer> myArrayList = new ArrayList<>(); // ko có dữ liệu
-        List<Integer> myArrayList_ = Arrays.asList(1, 18, 41); // có dữ liệu đổ vào
+        // Summary: có 2 cách viết
+        // 1:
+        List<Integer> myArrayList = new ArrayList<>(); // ko có dữ liệu --> ArrayList Instance
+
+        // 2:
+        List<Integer> myArrasList = Arrays.asList(1, 18, 41); // có dữ liệu đổ vào --> Arrays.asList()
+        //or:
+        Integer[] arr = {1, 2, 3}; // List<Integer>
+        List<Integer> myArrasList_ = Arrays.asList(arr); //Arrays.asList(arr) --> return: List<Integer>
+
+        //int[] arr0 = {0, 1, 2}; // Array Integer
+
 
         // CRUD:
+        // 1-CREATE
         myArrayList.add(1);
         myArrayList.add(2);
         myArrayList.add(0, 3);
 
-        // ArrayList: dùng size() & Collections.sort()
-        myArrayList.size();
-        Collections.sort(myArrayList);
+        // Unsupported Error: Arrays.asList() --> only read/update, NOT add/remove
+        // myArrasList.add(5);
 
-        // Còn Array dùng length & Arrays.sort()
-        int[] array = {5, 9, 14};
-        int len = array.length;
-        Arrays.sort(array);
+        // Support for all CRUD: ArrayList Instance
+        myArrayList.add(4);
 
-        // Get index of element
+
+
+        // 2-READ
+        // ARRAY lIST:
+        // Print each element of ArrayList
         for (int index = 0; index < myArrayList.size(); index++) {
-            System.out.println(myArrayList.get(index));
+            System.out.println(myArrayList.get(index)); // get element at [index] of ArrayList: arrayList.get(index)
+            myArrayList.remove(1); // 4-DELETE
         }
 
-        for (Integer integer : myArrayList) {
-            System.out.println(integer);
+        for (Integer element : myArrayList) {
+            System.out.println(element);
         }
+
+        // Print all elements of ArrayList
+        System.out.println(myArrayList);
+
+
+        // ARRAY:
+        // Print all elements of Array
+        int[] array = {6, 7, 8, 9};
+        System.out.println(Arrays.toString(array));
+
+        // Print each element of Array
+        for (int element : array) {
+            System.out.println(element);
+        }
+
+        // get element at [index] of Array: array[index]
+        System.out.println(array[3]);
+
+
+        // 3-UPDATE --> Lesson 05
+
+        // 4-DELETE
+        // arrayList.remove(index);
+
     }
 }

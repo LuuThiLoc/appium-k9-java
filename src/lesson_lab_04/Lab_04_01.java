@@ -48,9 +48,7 @@ public class Lab_04_01 {
                     break;
 
                 case 2:
-                    for (int index = 0; index < array.size(); index++) {
-                        System.out.println("Print numbers: " + array.get(index));
-                    }
+                    System.out.println("Print Numbers: " + array);
                     break;
 
                 case 3:
