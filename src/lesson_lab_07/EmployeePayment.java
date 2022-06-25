@@ -18,17 +18,17 @@ public class EmployeePayment {
         Employee ftEmployee = new FTEmployee(50000, 3);
         Employee ctEmployee = new CTEmployee(40000, 2);
 
-        //Calculate total salary:
-        int ftEmSalary = ftEmployee.getSalary();
-        int ctEmSalary = ctEmployee.getSalary();
-        int totalSalary = ftEmSalary + ctEmSalary;
-        System.out.println("Total salary is: " + totalSalary);
-
         //Calculate total employee numbers:
         int ftEmNumber = ftEmployee.getEmployeeNumber();
         int ctEmNumber = ctEmployee.getEmployeeNumber();
         int totalEmployeeNumber = ftEmNumber + ctEmNumber;
         System.out.println("Total employee numbers is: " + totalEmployeeNumber);
+
+        //Calculate total salary:
+        int ftEmSalary = ftEmployee.getSalary();
+        int ctEmSalary = ctEmployee.getSalary();
+        int totalSalary = (ftEmSalary*ftEmNumber) + (ctEmSalary*ctEmNumber);
+        System.out.println("Total salary is: " + totalSalary);
 
 
         employeePayment.calculateTotalSalary(Arrays.asList(ftEmployee, ctEmployee));
