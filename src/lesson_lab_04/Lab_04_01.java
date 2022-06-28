@@ -36,7 +36,7 @@ public class Lab_04_01 {
             switch (option) {
                 case 0:
                     isContinuing = false;
-                    System.out.println("Exit Game!");
+                    System.out.println("Exit Program!");
                     break;
 
                 case 1:
@@ -62,34 +62,35 @@ public class Lab_04_01 {
                     System.out.println("Get minimum number: " + minNumber);
                     break;
 
-/*                case 5:
+                case 5:
                     Scanner scanner01 = new Scanner(System.in);
                     System.out.print("Please enter a number in the array list to search index: ");
                     int searchNumber = scanner01.nextInt();
-
                     int searchIndex = 0;
 
-
-                    for (int index = 0; index < array.size(); index++) {
-                        if (searchNumber == array.get(index)) {
-                            searchIndex = index;
-                            System.out.println("Index of Search Number is: " + searchIndex);
-                            break;
-                        } else {
-                            System.out.println("Please input a correct number in the array list!");
+                    if (array.contains(searchNumber) == true) {
+                        for (int index = 0; index <= array.size(); index++) {
+                            if (array.get(index) == searchNumber) {
+                                searchIndex = index;
+                                System.out.println("Index of Search Number is: " + searchIndex);
+                                return;
+                            }
                         }
-                    }*/
+                    } else {
+                        System.out.println("Please input a correct number in the array list!");
+                    }
+                    break;
 
                 default:
                     System.out.println("[ERR] Please input the correct option!");
+                    break;
             }
         }
-        System.out.println("See you again!");
     }
 
     private static void printSimpleMenu() {
         System.out.println("======MENU======");
-        System.out.println("0. Exit Game");
+        System.out.println("0. Exit Program");
         System.out.println("1. Add number into ArrayList");
         System.out.println("2. Print numbers");
         System.out.println("3. Get maximum number");
