@@ -61,11 +61,6 @@ public class Animal {
     }
 
     public static void main(String[] args) {
-        Builder animalBuilder = new Builder();
-        animalBuilder.setName("Falcon");
-        animalBuilder.setSpeed(new SecureRandom().nextInt(50));
-        animalBuilder.setFlyable(true);
-        Animal falcon = animalBuilder.builder();
-        System.out.println(falcon);
+
     }
 }

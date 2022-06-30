@@ -16,7 +16,7 @@ public class TestAnimalBuilder {
         AnimalWithBuilder animal = builder
                 .setName("Eagle")
                 .setSpeed(50)
-                .setWings(true)
+                .setFlyable(true)
                 .builder();
 
         System.out.println(animal);

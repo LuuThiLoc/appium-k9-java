@@ -1,13 +1,9 @@
 package lesson_lab_08;
 
 public class AnimalWithBuilder {
-
-    public AnimalWithBuilder() {
-    }
-
-    private String name = "Horse";
-    private int speed = 30;
-    private boolean wings = false;
+    private String name;
+    private int speed;
+    private boolean flyable;
 
     public String getName() {
         return name;
@@ -17,8 +13,8 @@ public class AnimalWithBuilder {
         return speed;
     }
 
-    public boolean isWings() {
-        return wings;
+    public boolean isFlyable() {
+        return flyable;
     }
 
     @Override
@@ -26,20 +22,20 @@ public class AnimalWithBuilder {
         return "AnimalWithBuilder{" +
                 "name='" + name + '\'' +
                 ", speed=" + speed +
-                ", wings=" + wings +
+                ", wings=" + flyable +
                 '}';
     }
 
     protected AnimalWithBuilder(Builder builder) {
         name = builder.name;
         speed = builder.speed;
-        wings = builder.wings;
+        flyable = builder.flyable;
     }
 
     public static class Builder {
-        private String name = "Horse";
-        private int speed = 30;
-        private boolean wings = false;
+        private String name;
+        private int speed;
+        private boolean flyable;
 
 
         public Builder setName(String name) {
@@ -52,17 +48,16 @@ public class AnimalWithBuilder {
             return this;
         }
 
-        public Builder setWings(boolean wings) {
-            if (wings == true)  {
+        public Builder setFlyable(boolean flyable) {
+            if (flyable == true)  {
                 throw new IllegalArgumentException("Animal with wings can't be allow to run!");
             }
-            this.wings = wings;
+            this.flyable = false;
             return this;
         }
 
         public AnimalWithBuilder builder() {
             return new AnimalWithBuilder(this);
         }
-
     }
 }
