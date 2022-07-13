@@ -1,4 +1,4 @@
-package lesson_13;
+package lesson_lab_13;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,20 +6,20 @@ import java.util.List;
 
 public class DataFactory {
 
-    public static void saveEmployeeList(List<Employee> employeeList, String filePath) {
-        System.out.println("[INFO] Writing employee data to ".concat(filePath));
+    public static void saveBookList(List<Book> bookList, String filePath) {
+//        System.out.println("[INFO] Writing book data to ".concat(filePath));
 
         try (
-                FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                FileOutputStream fileOutputStream = new FileOutputStream(filePath,true);
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
                 BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
         ) {
-            for (Employee employee : employeeList) {
-                String dataLine = employee.getName() + ";" + employee.getAge() + ";" + employee.getSalary();
+            for (Book book : bookList) {
+                String dataLine = book.getISBN() + ";" + book.getTitle() + ";" + book.getAuthor() + ";" + book.getYear();
                 bufferedWriter.write(dataLine);
                 bufferedWriter.newLine();
+                bufferedWriter.close();
             }
-
         } catch (FileNotFoundException e) {
             System.out.println("[ERR] File not found!");
         } catch (IOException e) {
@@ -27,12 +27,10 @@ public class DataFactory {
         }
     }
 
-    public static List<Employee> getListEmployeeFromFile(String filePath) {
-        System.out.println("[INFO] Reading file from ".concat(filePath));
+    public static List<Book> getListBookFromFile(String filePath) {
+//        System.out.println("[INFO] Reading file from ".concat(filePath));
 
-        List<Employee> employeeList = new ArrayList<>();
-
-        //Stream -------------Lu/Vai--------------Ca/Ly
+        List<Book> bookList = new ArrayList<>();
 
         try (
                 FileInputStream fileInputStream = new FileInputStream(filePath);
@@ -42,13 +40,14 @@ public class DataFactory {
             String dataLine = bufferedReader.readLine();
             while (dataLine != null) {
                 System.out.println(dataLine);
-                String[] employeeData = dataLine.split(";");
-                String employeeName = employeeData[0];
-                int employeeAge = Integer.parseInt(employeeData[1]);
-                int employeeSalary = Integer.parseInt(employeeData[2]);
+                String[] bookData = dataLine.split(";");
+                int bookISBN = Integer.parseInt(bookData[0]);
+                String bookTitle = bookData[1];
+                String bookAuthor = bookData[2];
+                int bookYear = Integer.parseInt(bookData[3]);
 
-                Employee employee = new Employee(employeeName, employeeAge, employeeSalary);
-                employeeList.add(employee);
+                Book book = new Book(bookISBN, bookTitle, bookAuthor, bookYear);
+                bookList.add(book);
 
                 dataLine = bufferedReader.readLine();
             }
@@ -57,6 +56,7 @@ public class DataFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return employeeList;
+        return bookList;
     }
 }
+
