@@ -6,3 +6,5 @@
 2222;Book 1;Author 1;2005
 1255;Tren Duong Bang;TonyBuoiSang;2005
 5678;Cafe Cung Tony;TonyBuoiSang;2009
+45689;New Book;FirstNew;2009
+7894;Book 2;Author 2;2002
