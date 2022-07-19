@@ -1,7 +1,6 @@
 package lesson_lab_13;
 
 
-import java.io.IOException;
 import java.util.*;
 
 public class BookManagementProgram {
@@ -20,6 +19,8 @@ public class BookManagementProgram {
     public static String title;
     public static String author;
     public static int year;
+
+    static List<Book> bookList = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -42,7 +43,7 @@ public class BookManagementProgram {
                     break;
 
                 case 2:
-                    findABookByISBN(iSBN, title, author, year);
+                    findBookByISBN(iSBN, title, author, year);
                     break;
 
                 case 3:
@@ -84,90 +85,98 @@ public class BookManagementProgram {
         return book;
     }
 
-    private static Book getInfoBookFromDB(int iSBN, String title, String author, int year) {
+    private static void saveBookInDBWithOverwrite(Book newBook) {
 
-        // READING
-        String relativeFilePath = "\\src\\lesson_lab_13\\BookDB.txt";
-        String absoluteFilePath = System.getProperty("user.dir").concat(relativeFilePath);
+        // WRITING
+        List<Book> bookListToSave = new ArrayList<>();
 
-        List<Book> bookList = DataFactory.getListBookFromFile(absoluteFilePath);
+        bookListToSave.add(newBook);
 
-        for (Book book : bookList) {
-            iSBN = book.getISBN();
-            title = book.getTitle();
-            author = book.getAuthor();
-            year = book.getYear();
-        }
+        String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
+        DataFactory.saveBookListOverwrite(bookListToSave, bookDataFile, newBook);
 
-        return new Book(iSBN, title, author, year);
+        System.out.println("The book is saved into BookDB: " + newBook);
     }
 
-    private static void saveBookInDB(Book book) {
+    private static void saveBookInDBWithoutOverwrite(Book book) {
 
         // WRITING
         List<Book> bookListToSave = new ArrayList<>();
         bookListToSave.add(book);
 
         String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
-        DataFactory.saveBookList(bookListToSave, bookDataFile);
+        DataFactory.saveBookListWithoutOverwrite(bookListToSave, bookDataFile);
 
         System.out.println("The book is saved into BookDB: " + book);
     }
 
     private static void addNewBook() {
         Book book = inputInfoBook(iSBN, title, author, year);
-        saveBookInDB(book);
+        saveBookInDBWithoutOverwrite(book);
     }
 
-    private static Book findABookByISBN(int fISBN, String fTitle, String fAuthor, int fYear) {
+    private static Book findBookByISBN(int fISBN, String fTitle, String fAuthor, int fYear) {
+
         Scanner scanner02 = new Scanner(System.in);
         System.out.print("Please input ISBN: ");
         fISBN = scanner02.nextInt();
-//        fISBN = Integer.parseInt(scanner02.nextLine());
 
-        Book bookInDB = getInfoBookFromDB(iSBN, title, author, year);
+        Book bookDB = new Book(iSBN, title, author, year);
 
-        if (fISBN == iSBN) {
-            System.out.println("The Book is found: " + bookInDB);
-        } else {
+        bookList = getBookList(bookList);
+
+        for (int i = 0; i < bookList.size(); i++) {
+            if (bookList.get(i).getISBN() == fISBN) {
+                bookDB = bookList.get(i);
+                System.out.println("The Book is found: " + bookDB);
+                break;
+            }
+        }
+
+        if (!bookList.contains(bookDB)) {
             System.out.printf("Book with ISBN %d is not found\n", fISBN);
         }
-        return bookInDB;
+
+        return bookDB;
     }
 
     private static void updateABook() {
-        Book oldBook = BookManagementProgram.findABookByISBN(iSBN, title, author, year);
+        Book oldBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
 
         Scanner scanner03 = new Scanner(System.in);
         System.out.print("Please input updated ISBN: ");
         int inputUpdatedISBN = Integer.parseInt(scanner03.nextLine());
         int newISBN = oldBook.setISBN(inputUpdatedISBN);
+        int oldISBN = oldBook.getISBN();
 
         System.out.print("Please input updated title: ");
         String inputUpdatedTitle = scanner03.nextLine();
         String newTitle = oldBook.setTitle(inputUpdatedTitle);
+        String oldTitle = oldBook.getTitle();
 
         System.out.print("Please input updated author: ");
         String inputUpdatedAuthor = scanner03.nextLine();
         String newAuthor = oldBook.setAuthor(inputUpdatedAuthor);
+        String oldAuthor = oldBook.getAuthor();
 
         System.out.print("Please input updated year: ");
         int inputUpdatedYear = Integer.parseInt(scanner03.nextLine());
         int newYear = oldBook.setYear(inputUpdatedYear);
+        int oldYear = oldBook.getYear();
 
         Book newBook = new Book(newISBN, newTitle, newAuthor, newYear);
-        saveBookInDB(newBook);
+
+        saveBookInDBWithOverwrite(newBook);
     }
 
     private static void deleteABook() {
-        Book deletedBook = BookManagementProgram.findABookByISBN(iSBN, title, author, year);
-        String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
-        List<Book> bookList = DataFactory.getListBookFromFile(bookDataFile);
+        Book deletedBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
+        bookList = getBookList(bookList);
 
         for (Book book : bookList) {
             if (book == deletedBook) {
                 bookList.remove(book);
-                saveBookInDB(book);
+                saveBookInDBWithOverwrite(book);
             }
         }
 
@@ -175,9 +184,14 @@ public class BookManagementProgram {
         System.out.println("Check the deleted book is not existed in DB : " + bookList);
     }
 
-    private static void printTheBookList() {
+    private static List<Book> getBookList(List<Book> bookList) {
         String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
-        List<Book> bookList = DataFactory.getListBookFromFile(bookDataFile);
+        bookList = DataFactory.getListBookFromFile(bookDataFile);
+        return bookList;
+    }
+
+    private static void printTheBookList() {
+        getBookList(bookList);
         System.out.println("Print the booklist: " + bookList);
     }
 
@@ -197,3 +211,4 @@ public class BookManagementProgram {
         return scanner.nextInt();
     }
 }
+
