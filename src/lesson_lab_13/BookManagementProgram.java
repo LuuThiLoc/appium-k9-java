@@ -85,15 +85,10 @@ public class BookManagementProgram {
         return book;
     }
 
-    private static void saveBookInDBWithOverwrite(Book newBook) {
-
-        // WRITING
-        List<Book> bookListToSave = new ArrayList<>();
-
-        bookListToSave.add(newBook);
+    private static void saveBookInDBWithOverwrite(Book oldBook, Book newBook) {
 
         String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
-        DataFactory.saveBookListOverwrite(bookListToSave, bookDataFile, newBook);
+        DataFactory.saveBookListOverwrite(bookDataFile, oldBook, newBook);
 
         System.out.println("The book is saved into BookDB: " + newBook);
     }
@@ -141,42 +136,48 @@ public class BookManagementProgram {
     }
 
     private static void updateABook() {
+        bookList = getBookList(bookList);
+
         Book oldBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
+
+        if (!bookList.contains(oldBook)){
+            throw new IllegalArgumentException("[ERR] Invalid input!");
+        }
 
         Scanner scanner03 = new Scanner(System.in);
         System.out.print("Please input updated ISBN: ");
         int inputUpdatedISBN = Integer.parseInt(scanner03.nextLine());
-        int newISBN = oldBook.setISBN(inputUpdatedISBN);
-        int oldISBN = oldBook.getISBN();
+        int newISBN = inputUpdatedISBN;
+//        int newISBN = oldBook.setISBN(inputUpdatedISBN);
 
         System.out.print("Please input updated title: ");
         String inputUpdatedTitle = scanner03.nextLine();
-        String newTitle = oldBook.setTitle(inputUpdatedTitle);
-        String oldTitle = oldBook.getTitle();
+        String newTitle = inputUpdatedTitle;
+//        String newTitle = oldBook.setTitle(inputUpdatedTitle);
 
         System.out.print("Please input updated author: ");
         String inputUpdatedAuthor = scanner03.nextLine();
-        String newAuthor = oldBook.setAuthor(inputUpdatedAuthor);
-        String oldAuthor = oldBook.getAuthor();
+        String newAuthor = inputUpdatedAuthor;
+//        String newAuthor = oldBook.setAuthor(inputUpdatedAuthor);
 
         System.out.print("Please input updated year: ");
         int inputUpdatedYear = Integer.parseInt(scanner03.nextLine());
-        int newYear = oldBook.setYear(inputUpdatedYear);
-        int oldYear = oldBook.getYear();
+        int newYear = inputUpdatedYear;
+//        int newYear = oldBook.setYear(inputUpdatedYear);
 
         Book newBook = new Book(newISBN, newTitle, newAuthor, newYear);
 
-        saveBookInDBWithOverwrite(newBook);
+        saveBookInDBWithOverwrite(oldBook, newBook);
     }
 
     private static void deleteABook() {
         Book deletedBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
         bookList = getBookList(bookList);
 
-        for (Book book : bookList) {
-            if (book == deletedBook) {
-                bookList.remove(book);
-                saveBookInDBWithOverwrite(book);
+        for (int i = 0; i < bookList.size(); i++) {
+            if (bookList.get(i).getISBN() == deletedBook.getISBN()) {
+                bookList.remove(bookList.get(i));
+//                saveBookInDBWithOverwrite(deletedBook, bookList.get(i));
             }
         }
 

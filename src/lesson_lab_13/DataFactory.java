@@ -1,8 +1,14 @@
 package lesson_lab_13;
 
+import lesson_13.Employee;
+
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DataFactory {
 
@@ -26,41 +32,40 @@ public class DataFactory {
         }
     }
 
-    public static void saveBookListOverwrite(List<Book> oldBookList, String filePath, Book newBook) {
+    public static String[] readFile(Path path) throws IOException {
+        try (BufferedReader br = Files.newBufferedReader(path);
+             Stream<String> stream = br.lines()) {
+            return stream.peek(System.out::println)
+                    .collect(Collectors.toList())
+                    .toArray(String[]::new);
+        }
+    }
+
+    public static void saveBookListOverwrite(String filePath, Book oldBook, Book newBook) {
 
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(filePath, true);
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
                 BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
         ) {
-
-            for (Book oldBook : oldBookList) {
-
-//                String bookListIndex0 = String.valueOf(oldBookList.get(0));
-//                String bookListIndex1 = String.valueOf(oldBookList.get(1));
-//                String bookListIndex2 = String.valueOf(oldBookList.get(2));
-//                String bookListIndex3 = String.valueOf(oldBookList.get(3));
-//
-//                String replacedISBN = bookListIndex0.replaceAll(String.valueOf(oldBook.getISBN()), String.valueOf(newBook.getISBN()));
-//                String replacedTitle = bookListIndex1.replaceAll(oldBook.getTitle(), newBook.getTitle());
-//                String replacedAuthor = bookListIndex2.replaceAll(oldBook.getAuthor(), newBook.getAuthor());
-//                String replacedYear = bookListIndex3.replaceAll(String.valueOf(oldBook.getYear()), String.valueOf(newBook.getYear()));
-//                String newDataLine = replacedISBN + ";" + replacedTitle + ";" + replacedAuthor + ";" + replacedYear +"\n";
-
+            for (Book book : getListBookFromFile(filePath)) {
                 String oldDataLine = oldBook.getISBN() + ";" + oldBook.getTitle() + ";" + oldBook.getAuthor() + ";" + oldBook.getYear();
                 String newDataLine = newBook.getISBN() + ";" + newBook.getTitle() + ";" + newBook.getAuthor() + ";" + newBook.getYear();
-                String replace = oldDataLine.replaceAll(oldDataLine, newDataLine);
-                bufferedWriter.write(replace);
-                bufferedWriter.newLine();
-            }
 
+                if (book.getISBN() == oldBook.getISBN()){
+                    oldDataLine = oldDataLine.replace(oldDataLine, newDataLine);
+                    bufferedWriter.write(oldDataLine);
+                    bufferedWriter.newLine();
+                    break;
+                }
+
+            }
         } catch (FileNotFoundException e) {
             System.out.println("[ERR] File not found!");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     public static List<Book> getListBookFromFile(String filePath) {
 
         List<Book> bookList = new ArrayList<>();
