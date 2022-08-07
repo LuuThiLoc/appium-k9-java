@@ -5,8 +5,8 @@ public enum SupportIOSVersion {
     IOS_13("iOS_13", 13),
     IOS_15("iOS_15", 15);
 
-    private String iOSName;
-    private int version;
+    private final String iOSName;
+    private final int version;
 
     public String getiOSName() {
         return iOSName;

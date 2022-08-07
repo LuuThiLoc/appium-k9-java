@@ -140,30 +140,22 @@ public class BookManagementProgram {
 
         Book oldBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
 
-        if (!bookList.contains(oldBook)){
+        if (!bookList.contains(oldBook)) {
             throw new IllegalArgumentException("[ERR] Invalid input!");
         }
 
         Scanner scanner03 = new Scanner(System.in);
         System.out.print("Please input updated ISBN: ");
-        int inputUpdatedISBN = Integer.parseInt(scanner03.nextLine());
-        int newISBN = inputUpdatedISBN;
-//        int newISBN = oldBook.setISBN(inputUpdatedISBN);
+        int newISBN = Integer.parseInt(scanner03.nextLine());
 
         System.out.print("Please input updated title: ");
-        String inputUpdatedTitle = scanner03.nextLine();
-        String newTitle = inputUpdatedTitle;
-//        String newTitle = oldBook.setTitle(inputUpdatedTitle);
+        String newTitle = scanner03.nextLine();
 
         System.out.print("Please input updated author: ");
-        String inputUpdatedAuthor = scanner03.nextLine();
-        String newAuthor = inputUpdatedAuthor;
-//        String newAuthor = oldBook.setAuthor(inputUpdatedAuthor);
+        String newAuthor = scanner03.nextLine();
 
         System.out.print("Please input updated year: ");
-        int inputUpdatedYear = Integer.parseInt(scanner03.nextLine());
-        int newYear = inputUpdatedYear;
-//        int newYear = oldBook.setYear(inputUpdatedYear);
+        int newYear = Integer.parseInt(scanner03.nextLine());
 
         Book newBook = new Book(newISBN, newTitle, newAuthor, newYear);
 
@@ -177,7 +169,7 @@ public class BookManagementProgram {
         for (int i = 0; i < bookList.size(); i++) {
             if (bookList.get(i).getISBN() == deletedBook.getISBN()) {
                 bookList.remove(bookList.get(i));
-//                saveBookInDBWithOverwrite(deletedBook, bookList.get(i));
+                saveBookInDBWithOverwrite(deletedBook, bookList.get(i));
             }
         }
 

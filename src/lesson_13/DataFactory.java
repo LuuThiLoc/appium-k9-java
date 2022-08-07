@@ -12,7 +12,7 @@ public class DataFactory {
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(filePath);
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)
         ) {
             for (Employee employee : employeeList) {
                 String dataLine = employee.getName() + ";" + employee.getAge() + ";" + employee.getSalary();
@@ -37,7 +37,7 @@ public class DataFactory {
         try (
                 FileInputStream fileInputStream = new FileInputStream(filePath);
                 InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
         ) {
             String dataLine = bufferedReader.readLine();
             while (dataLine != null) {

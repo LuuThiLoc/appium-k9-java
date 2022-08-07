@@ -11,7 +11,7 @@ public class Animal {
     }
 
     public Animal(String name, int speed) {
-        this.name = name;
+        Animal.name = name;
         this.speed = speed;
     }
 
@@ -20,7 +20,7 @@ public class Animal {
     }
 
     public void setName(String name) {
-        this.name = name;
+        Animal.name = name;
     }
 
     public int getSpeed() {

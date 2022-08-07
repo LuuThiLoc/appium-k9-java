@@ -8,7 +8,7 @@ public class StringLearning {
     public static void main(String[] args) {
         String myName1 = "Teo"; //Literal declaration (tường minh)
         String myName2 = "Teo"; //Literal declaration
-        String myName3 = new String("Teo"); //Via String object (object)
+        String myName3 = "Teo"; //Via String object (object)
 
         //khi so sánh string thì dùng hàm equals, ko sử dụng = =
         System.out.println("myName1 == myName2: " + (myName1.equals(myName2)));

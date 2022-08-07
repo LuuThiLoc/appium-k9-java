@@ -1,9 +1,9 @@
 package lesson_lab_08;
 
 public class AnimalWithBuilder {
-    private String name;
-    private int speed;
-    private boolean flyable;
+    private final String name;
+    private final int speed;
+    private final boolean flyable;
 
     public String getName() {
         return name;
