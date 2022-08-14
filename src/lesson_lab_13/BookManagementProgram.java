@@ -1,7 +1,9 @@
 package lesson_lab_13;
 
-
 import java.util.*;
+
+import static lesson_lab_13.DataFactory.saveBookListOverwrite;
+import static lesson_lab_13.DataFactory.saveBookListWithoutOverwrite;
 
 public class BookManagementProgram {
 
@@ -43,7 +45,7 @@ public class BookManagementProgram {
                     break;
 
                 case 2:
-                    findBookByISBN(iSBN, title, author, year);
+                    findBookByISBN();
                     break;
 
                 case 3:
@@ -65,56 +67,39 @@ public class BookManagementProgram {
         }
     }
 
-    private static Book inputInfoBook(int iSBN, String title, String author, int year) {
+    private static Book inputInfoBook() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Please input ISBN: ");
-        iSBN = Integer.parseInt(scanner.nextLine());
+        int iSBN = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Please input title: ");
-        title = scanner.nextLine();
+        String title = scanner.nextLine();
 
         System.out.print("Please input author: ");
-        author = scanner.nextLine();
+        String author = scanner.nextLine();
 
         System.out.print("Please input year: ");
-        year = Integer.parseInt(scanner.nextLine());
+        int year = Integer.parseInt(scanner.nextLine());
 
         Book book = new Book(iSBN, title, author, year);
 
         return book;
     }
 
-    private static void saveBookInDBWithOverwrite(Book oldBook, Book newBook) {
-
-        String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
-        DataFactory.saveBookListOverwrite(bookDataFile, oldBook, newBook);
-
-        System.out.println("The book is saved into BookDB: " + newBook);
-    }
-
-    private static void saveBookInDBWithoutOverwrite(Book book) {
-
-        // WRITING
-        List<Book> bookListToSave = new ArrayList<>();
-        bookListToSave.add(book);
-
-        String bookDataFile = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
-        DataFactory.saveBookListWithoutOverwrite(bookListToSave, bookDataFile);
-
-        System.out.println("The book is saved into BookDB: " + book);
-    }
-
     private static void addNewBook() {
-        Book book = inputInfoBook(iSBN, title, author, year);
-        saveBookInDBWithoutOverwrite(book);
+        Book book = inputInfoBook();
+        String filePath = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
+        bookList = getBookList(bookList);
+        bookList.add(book);
+        saveBookListWithoutOverwrite(bookList, filePath);
     }
 
-    private static Book findBookByISBN(int fISBN, String fTitle, String fAuthor, int fYear) {
+    private static Book findBookByISBN() {
 
         Scanner scanner02 = new Scanner(System.in);
         System.out.print("Please input ISBN: ");
-        fISBN = scanner02.nextInt();
+        int fISBN = scanner02.nextInt();
 
         Book bookDB = new Book(iSBN, title, author, year);
 
@@ -138,7 +123,7 @@ public class BookManagementProgram {
     private static void updateABook() {
         bookList = getBookList(bookList);
 
-        Book oldBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
+        Book oldBook = BookManagementProgram.findBookByISBN();
 
         if (!bookList.contains(oldBook)) {
             throw new IllegalArgumentException("[ERR] Invalid input!");
@@ -159,17 +144,19 @@ public class BookManagementProgram {
 
         Book newBook = new Book(newISBN, newTitle, newAuthor, newYear);
 
-        saveBookInDBWithOverwrite(oldBook, newBook);
+        String filePath = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
+        saveBookListOverwrite(filePath, oldBook, newBook);
     }
 
     private static void deleteABook() {
-        Book deletedBook = BookManagementProgram.findBookByISBN(iSBN, title, author, year);
+        Book deletedBook = BookManagementProgram.findBookByISBN();
         bookList = getBookList(bookList);
 
         for (int i = 0; i < bookList.size(); i++) {
             if (bookList.get(i).getISBN() == deletedBook.getISBN()) {
                 bookList.remove(bookList.get(i));
-                saveBookInDBWithOverwrite(deletedBook, bookList.get(i));
+                String filePath = System.getProperty("user.dir").concat("\\src\\lesson_lab_13\\BookDB.txt");
+                saveBookListOverwrite(filePath, deletedBook, null);
             }
         }
 
@@ -184,8 +171,7 @@ public class BookManagementProgram {
     }
 
     private static void printTheBookList() {
-        getBookList(bookList);
-        System.out.println("Print the booklist: " + bookList);
+        System.out.println("Print the booklist: " + getBookList(bookList));
     }
 
     private static void printSimpleMenu() {

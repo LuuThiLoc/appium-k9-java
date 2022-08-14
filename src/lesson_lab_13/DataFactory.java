@@ -13,7 +13,7 @@ public class DataFactory {
     public static void saveBookListWithoutOverwrite(List<Book> bookList, String filePath) {
 
         try (
-                FileOutputStream fileOutputStream = new FileOutputStream(filePath, true);
+                FileOutputStream fileOutputStream = new FileOutputStream(filePath, false);
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
                 BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter)
         ) {
@@ -21,22 +21,12 @@ public class DataFactory {
                 String dataLine = book.getISBN() + ";" + book.getTitle() + ";" + book.getAuthor() + ";" + book.getYear();
                 bufferedWriter.write(dataLine);
                 bufferedWriter.newLine();
-                bufferedWriter.close();
             }
 
         } catch (FileNotFoundException e) {
             System.out.println("[ERR] File not found!");
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static String[] readFile(Path path) throws IOException {
-        try (BufferedReader br = Files.newBufferedReader(path);
-             Stream<String> stream = br.lines()) {
-            return stream.peek(System.out::println)
-                    .collect(Collectors.toList())
-                    .toArray(String[]::new);
         }
     }
 
@@ -55,27 +45,24 @@ public class DataFactory {
 
                 if (bookList.get(i).getISBN() == oldBook.getISBN()) {
 
-                    if (!(newBook.toString().isEmpty())){
+                    if (newBook != null) {
                         oldDataLine = newBook.getISBN() + ";" + newBook.getTitle() + ";" + newBook.getAuthor() + ";" + newBook.getYear();
+
                     } else {
-//
-//                    if (newBook.getISBN() == bookList.get(i).getISBN()){
-//                        bookList.remove(newBook);
-                        oldDataLine = oldDataLine.replaceAll(bookList.get(i).toString(), null);
-//                        bufferedWriter.close();
-//                        oldDataLine = bookList.get(i).getISBN() + ";" + bookList.get(i).getTitle() + ";" + bookList.get(i).getAuthor() + ";" + bookList.get(i).getYear();                        oldDataLine = " ";
+                        oldDataLine = bookList.get(i).getISBN() + ";" + bookList.get(i).getTitle() + ";" + bookList.get(i).getAuthor() + ";" + bookList.get(i).getYear();
+                        oldDataLine = oldDataLine.replaceAll(oldDataLine, "").trim();
+                        bufferedWriter.append(oldDataLine);
                     }
                 }
-
                 bufferedWriter.write(oldDataLine);
                 bufferedWriter.newLine();
-            }
+                }
 
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         getListBookFromFile(filePath);
@@ -93,6 +80,7 @@ public class DataFactory {
         ) {
             String dataLine = bufferedReader.readLine();
             while (dataLine != null) {
+                if (dataLine.trim().length()>0){
                 String[] bookData = dataLine.split(";");
                 int bookISBN = Integer.parseInt(bookData[0]);
                 String bookTitle = bookData[1];
@@ -101,9 +89,12 @@ public class DataFactory {
 
                 Book book = new Book(bookISBN, bookTitle, bookAuthor, bookYear);
                 bookList.add(book);
+                }
 
                 dataLine = bufferedReader.readLine();
-            }
+
+            } ;
+
         } catch (FileNotFoundException e) {
             System.out.println("[ERR] File not found!");
         } catch (IOException e) {
